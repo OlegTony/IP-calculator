@@ -18,4 +18,10 @@
 
     <!-- Placeholder for empty results -->
     <string name="default_placeholder">—</string>
+    <!-- Добавь это в самый конец существующего файла перед тегом </resources> -->
+    <string name="error_empty_fields">Please fill in all fields!</string>
+    <string name="error_invalid_prefix">Prefix must be between 0 and 32!</string>
+    <string name="error_invalid_ip">Invalid IP address format!</string>
+    <string name="not_available">N/A</string>
+
 </resources>

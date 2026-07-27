@@ -32,23 +32,23 @@ class MainActivity : AppCompatActivity() {
             val ipString = etIpAddress.text.toString().trim()
             val prefixString = etPrefix.text.toString().trim()
 
-            // Проверка на пустые поля
+            // Проверка на пустые поля (Берем строку из ресурсов)
             if (ipString.isEmpty() || prefixString.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.error_empty_fields), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Валидация префикса CIDR (от 0 до 32)
+            // Валидация префикса CIDR (Берем строку из ресурсов)
             val prefix = prefixString.toIntOrNull()
             if (prefix == null || prefix < 0 || prefix > 32) {
-                Toast.makeText(this, "Prefix must be between 0 and 32!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.error_invalid_prefix), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Парсинг IP-адреса в число (Int)
+            // Парсинг IP-адреса в число (Берем строку из ресурсов)
             val ipInt = parseIpToBytes(ipString)
             if (ipInt == null) {
-                Toast.makeText(this, "Invalid IP address format!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.error_invalid_ip), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -65,9 +65,10 @@ class MainActivity : AppCompatActivity() {
             val hostCount: Long
 
             if (prefix >= 31) {
-                // В сетях /31 (RFC 3021) и /32 хосты рассчитываются как исключение
-                firstHostString = "N/A"
-                lastHostString = "N/A"
+                // В сетях /31 (RFC 3021) и /32 хосты рассчитываются как исключение (Берем строку из ресурсов)
+                val naString = getString(R.string.not_available)
+                firstHostString = naString
+                lastHostString = naString
                 hostCount = 0
             } else {
                 // Стандартный расчет диапазона: NetworkID + 1 и Broadcast - 1
