@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="text_high_contrast">#212121</color>
+
+    <!-- Новые цвета для интерфейса -->
+    <color name="primary_dark_blue">#1A237E</color> <!-- Глубокий тёмно-синий (для кнопок) -->
+    <color name="primary_dark_blue_variant">#0D47A1</color> <!-- Чуть светлее для акцентов -->
+    <color name="surface_gray">#FAFAFA</color>       <!-- Светло-серый фон для полей -->
+    <color name="hint_gray">#757575</color>          <!-- Серый цвет для подсказок (hint) -->
+</resources>

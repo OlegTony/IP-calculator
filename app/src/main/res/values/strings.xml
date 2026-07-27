@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">IP Calculator</string>
+
+    <!-- Inputs section -->
+    <string name="title_input_data">Input Data</string>
+    <string name="hint_ip_address">IP-address </string>
+    <string name="hint_network_prefix">Network Prefix</string>
+    <string name="btn_calculate">Calculate</string>
+
+    <!-- Results section -->
+    <string name="title_analysis_results">Analysis Results</string>
+    <string name="label_subnet_mask">Subnet Mask:</string>
+    <string name="label_network_id">Network ID:</string>
+    <string name="label_broadcast_address">Broadcast Address:</string>
+    <string name="label_first_usable_host">First Usable Host:</string>
+    <string name="label_last_usable_host">Last Usable Host:</string>
+    <string name="label_total_usable_hosts">Total Usable Hosts:</string>
+
+    <!-- Placeholder for empty results -->
+    <string name="default_placeholder">—</string>
+</resources>
