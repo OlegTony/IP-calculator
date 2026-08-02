@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         val tvLastHost = findViewById<TextView>(R.id.tvLastHost)
         val tvUsableHosts = findViewById<TextView>(R.id.tvUsableHosts)
 
+        // Инициализация начального состояния маски с прочерками при старте приложения
+        val placeholder = getString(R.string.default_placeholder)
+        tvNetmask.text = getString(R.string.label_subnet_mask, placeholder, placeholder)
+
         // Кнопка "Рассчитать"
         btnCalculate.setOnClickListener {
             val ipString = etIpAddress.text.toString().trim()
@@ -76,7 +80,9 @@ class MainActivity : AppCompatActivity() {
                 hostCount = 2.0.pow(32 - prefix).toLong() - 2
             }
 
-            tvNetmask.text = intToIpString(maskInt)
+            // ИСПРАВЛЕНО: Передаем маску и префикс как аргументы в шаблон строки ресурсов
+            tvNetmask.text = getString(R.string.label_subnet_mask, intToIpString(maskInt), prefix.toString())
+
             tvNetworkId.text = intToIpString(networkIdInt)
             tvBroadcast.text = intToIpString(broadcastInt)
             tvFirstHost.text = firstHostString
@@ -89,8 +95,9 @@ class MainActivity : AppCompatActivity() {
             etIpAddress.text.clear()
             etPrefix.text.clear()
 
-            val placeholder = getString(R.string.default_placeholder)
-            tvNetmask.text = placeholder
+            // ИСПРАВЛЕНО: Возвращаем маску к дефолтному шаблону с прочерками
+            tvNetmask.text = getString(R.string.label_subnet_mask, placeholder, placeholder)
+
             tvNetworkId.text = placeholder
             tvBroadcast.text = placeholder
             tvFirstHost.text = placeholder
@@ -100,10 +107,8 @@ class MainActivity : AppCompatActivity() {
 
         // Кнопка "Копировать" — собирает результаты в буфер обмена
         btnCopy.setOnClickListener {
-            val placeholder = getString(R.string.default_placeholder)
-
-            // Если расчет еще не производился (на экране заглушки), копировать нечего
-            if (tvNetmask.text == placeholder) {
+            // Если расчет еще не производился (в тексте маски есть прочерк), копировать нечего
+            if (tvNetmask.text.contains(placeholder)) {
                 Toast.makeText(this, getString(R.string.msg_nothing_to_copy), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -112,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             val shareText = """
                 ${getString(R.string.title_analysis_results)}
                 IP: ${etIpAddress.text} /${etPrefix.text}
-                ${getString(R.string.label_subnet_mask)} ${tvNetmask.text}
+                ${tvNetmask.text}
                 ${getString(R.string.label_network_id)} ${tvNetworkId.text}
                 ${getString(R.string.label_broadcast_address)} ${tvBroadcast.text}
                 ${getString(R.string.label_first_usable_host)} ${tvFirstHost.text}

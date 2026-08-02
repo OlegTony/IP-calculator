@@ -9,7 +9,7 @@
 
     <!-- Results section -->
     <string name="title_analysis_results">Results</string>
-    <string name="label_subnet_mask">Subnet Mask:</string>
+    <string name="label_subnet_mask">Subnet Mask: %1$s (/%2$s)</string>
     <string name="label_network_id">Network ID:</string>
     <string name="label_broadcast_address">Broadcast:</string>
     <string name="label_first_usable_host">First Host:</string>

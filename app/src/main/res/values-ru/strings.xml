@@ -9,7 +9,7 @@
 
     <!-- Раздел результатов -->
     <string name="title_analysis_results">Результаты</string>
-    <string name="label_subnet_mask">Маска подсети:</string>
+    <string name="label_subnet_mask">Маска подсети: %1$s (/%2$s)</string>
     <string name="label_network_id">ID сети:</string>
     <string name="label_broadcast_address">Broadcast:</string>
     <string name="label_first_usable_host">Первый хост:</string>

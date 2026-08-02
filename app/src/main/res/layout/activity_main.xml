@@ -81,19 +81,17 @@
             android:orientation="horizontal"
             android:layout_marginBottom="6dp">
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tvNetmask"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_subnet_mask"
                 android:textStyle="bold"
                 android:textColor="@color/text_high_contrast"
-                android:layout_marginEnd="8dp" />
-            <TextView
-                android:id="@+id/tvNetmask"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/default_placeholder"
-                android:textColor="@color/text_high_contrast" />
+                android:maxLines="1"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="11sp"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeStepGranularity="1sp" />
         </LinearLayout>
 
         <!-- Network ID -->
