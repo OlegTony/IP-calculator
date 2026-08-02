@@ -8,13 +8,13 @@
     <string name="btn_calculate">Calculate</string>
 
     <!-- Results section -->
-    <string name="title_analysis_results">Analysis Results</string>
+    <string name="title_analysis_results">Results</string>
     <string name="label_subnet_mask">Subnet Mask:</string>
     <string name="label_network_id">Network ID:</string>
-    <string name="label_broadcast_address">Broadcast Address:</string>
-    <string name="label_first_usable_host">First Usable Host:</string>
-    <string name="label_last_usable_host">Last Usable Host:</string>
-    <string name="label_total_usable_hosts">Total Usable Hosts:</string>
+    <string name="label_broadcast_address">Broadcast:</string>
+    <string name="label_first_usable_host">First Host:</string>
+    <string name="label_last_usable_host">Last Host:</string>
+    <string name="label_total_usable_hosts">Total Hosts:</string>
 
     <!-- Placeholder for empty results -->
     <string name="default_placeholder">—</string>
@@ -23,5 +23,8 @@
     <string name="error_invalid_prefix">Prefix must be between 0 and 32!</string>
     <string name="error_invalid_ip">Invalid IP address format!</string>
     <string name="not_available">N/A</string>
-
+    <string name="btn_clear">Clear</string>
+    <string name="btn_copy">Copy</string>
+    <string name="msg_copied">Results copied to clipboard!</string>
+    <string name="msg_nothing_to_copy">No results to copy. Calculate first!</string>
 </resources>

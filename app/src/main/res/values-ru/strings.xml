@@ -8,13 +8,13 @@
     <string name="btn_calculate">Рассчитать</string>
 
     <!-- Раздел результатов -->
-    <string name="title_analysis_results">Результаты анализа</string>
+    <string name="title_analysis_results">Результаты</string>
     <string name="label_subnet_mask">Маска подсети:</string>
     <string name="label_network_id">ID сети:</string>
-    <string name="label_broadcast_address">Broadcast адрес:</string>
-    <string name="label_first_usable_host">Первый доступный хост:</string>
-    <string name="label_last_usable_host">Последний доступный хост:</string>
-    <string name="label_total_usable_hosts">Всего доступных хостов:</string>
+    <string name="label_broadcast_address">Broadcast:</string>
+    <string name="label_first_usable_host">Первый хост:</string>
+    <string name="label_last_usable_host">Последний хост:</string>
+    <string name="label_total_usable_hosts">Всего хостов:</string>
 
     <!-- Заполнитель для пустых результатов -->
     <string name="default_placeholder">—</string>
@@ -24,4 +24,8 @@
     <string name="error_invalid_prefix">Префикс должен быть от 0 до 32!</string>
     <string name="error_invalid_ip">Некорректный формат IP-адреса!</string>
     <string name="not_available">Н/Д</string>
+    <string name="btn_clear">Очистить</string>
+    <string name="btn_copy">Копировать</string>
+    <string name="msg_copied">Результаты скопированы в буфер обмена!</string>
+    <string name="msg_nothing_to_copy">Нечего копировать. Сначала выполните расчет!</string>
 </resources>

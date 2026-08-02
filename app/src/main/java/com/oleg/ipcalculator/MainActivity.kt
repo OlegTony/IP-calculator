@@ -1,5 +1,8 @@
 package com.oleg.ipcalculator
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -20,6 +23,10 @@ class MainActivity : AppCompatActivity() {
         val etPrefix = findViewById<EditText>(R.id.etPrefix)
         val btnCalculate = findViewById<Button>(R.id.btnCalculate)
 
+        // Кнопки из Шага 2
+        val btnClear = findViewById<Button>(R.id.btnClear)
+        val btnCopy = findViewById<Button>(R.id.btnCopy)
+
         // 2. Инициализация элементов вывода результатов
         val tvNetmask = findViewById<TextView>(R.id.tvNetmask)
         val tvNetworkId = findViewById<TextView>(R.id.tvNetworkId)
@@ -28,56 +35,47 @@ class MainActivity : AppCompatActivity() {
         val tvLastHost = findViewById<TextView>(R.id.tvLastHost)
         val tvUsableHosts = findViewById<TextView>(R.id.tvUsableHosts)
 
+        // Кнопка "Рассчитать"
         btnCalculate.setOnClickListener {
             val ipString = etIpAddress.text.toString().trim()
             val prefixString = etPrefix.text.toString().trim()
 
-            // Проверка на пустые поля (Берем строку из ресурсов)
             if (ipString.isEmpty() || prefixString.isEmpty()) {
                 Toast.makeText(this, getString(R.string.error_empty_fields), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Валидация префикса CIDR (Берем строку из ресурсов)
             val prefix = prefixString.toIntOrNull()
             if (prefix == null || prefix < 0 || prefix > 32) {
                 Toast.makeText(this, getString(R.string.error_invalid_prefix), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Парсинг IP-адреса в число (Берем строку из ресурсов)
             val ipInt = parseIpToBytes(ipString)
             if (ipInt == null) {
                 Toast.makeText(this, getString(R.string.error_invalid_ip), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Вычисление маски подсети по префиксу
             val maskInt = if (prefix == 0) 0 else (-1 shl (32 - prefix))
-
-            // Побитовые операции (AND и NOT) для расчетов
             val networkIdInt = ipInt and maskInt
             val broadcastInt = networkIdInt or maskInt.inv()
 
-            // Расчет диапазона хостов по сисадминским стандартам
             val firstHostString: String
             val lastHostString: String
             val hostCount: Long
 
             if (prefix >= 31) {
-                // В сетях /31 (RFC 3021) и /32 хосты рассчитываются как исключение (Берем строку из ресурсов)
                 val naString = getString(R.string.not_available)
                 firstHostString = naString
                 lastHostString = naString
                 hostCount = 0
             } else {
-                // Стандартный расчет диапазона: NetworkID + 1 и Broadcast - 1
                 firstHostString = intToIpString(networkIdInt + 1)
                 lastHostString = intToIpString(broadcastInt - 1)
                 hostCount = 2.0.pow(32 - prefix).toLong() - 2
             }
 
-            // 3. Вывод результатов в отдельные ячейки интерфейса
             tvNetmask.text = intToIpString(maskInt)
             tvNetworkId.text = intToIpString(networkIdInt)
             tvBroadcast.text = intToIpString(broadcastInt)
@@ -85,9 +83,52 @@ class MainActivity : AppCompatActivity() {
             tvLastHost.text = lastHostString
             tvUsableHosts.text = hostCount.toString()
         }
+
+        // Кнопка "Очистить" — сбрасывает ввод и возвращает плейсхолдеры
+        btnClear.setOnClickListener {
+            etIpAddress.text.clear()
+            etPrefix.text.clear()
+
+            val placeholder = getString(R.string.default_placeholder)
+            tvNetmask.text = placeholder
+            tvNetworkId.text = placeholder
+            tvBroadcast.text = placeholder
+            tvFirstHost.text = placeholder
+            tvLastHost.text = placeholder
+            tvUsableHosts.text = placeholder
+        }
+
+        // Кнопка "Копировать" — собирает результаты в буфер обмена
+        btnCopy.setOnClickListener {
+            val placeholder = getString(R.string.default_placeholder)
+
+            // Если расчет еще не производился (на экране заглушки), копировать нечего
+            if (tvNetmask.text == placeholder) {
+                Toast.makeText(this, getString(R.string.msg_nothing_to_copy), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Формируем красивый структурированный текст для буфера
+            val shareText = """
+                ${getString(R.string.title_analysis_results)}
+                IP: ${etIpAddress.text} /${etPrefix.text}
+                ${getString(R.string.label_subnet_mask)} ${tvNetmask.text}
+                ${getString(R.string.label_network_id)} ${tvNetworkId.text}
+                ${getString(R.string.label_broadcast_address)} ${tvBroadcast.text}
+                ${getString(R.string.label_first_usable_host)} ${tvFirstHost.text}
+                ${getString(R.string.label_last_usable_host)} ${tvLastHost.text}
+                ${getString(R.string.label_total_usable_hosts)} ${tvUsableHosts.text}
+            """.trimIndent()
+
+            // Копируем в системный буфер обмена Android
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("IP Calculator Results", shareText)
+            clipboard.setPrimaryClip(clip)
+
+            Toast.makeText(this, getString(R.string.msg_copied), Toast.LENGTH_SHORT).show()
+        }
     }
 
-    // Функция перевода строки IP в 32-битное целое число
     private fun parseIpToBytes(ipStr: String): Int? {
         val parts = ipStr.split(".")
         if (parts.size != 4) return null
@@ -104,7 +145,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Функция перевода 32-битного целого числа обратно в строку IP формата X.X.X.X
     private fun intToIpString(ipInt: Int): String {
         return String.format(
             Locale.US,
