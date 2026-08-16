@@ -35,9 +35,15 @@ class MainActivity : AppCompatActivity() {
         val tvLastHost = findViewById<TextView>(R.id.tvLastHost)
         val tvUsableHosts = findViewById<TextView>(R.id.tvUsableHosts)
 
-        // Инициализация начального состояния маски с прочерками при старте приложения
+        // Новые элементы из Шага 4 (Аналитика)
+        val tvNetworkClass = findViewById<TextView>(R.id.tvNetworkClass)
+        val tvNetworkType = findViewById<TextView>(R.id.tvNetworkType)
+
+        // Инициализация начального состояния полей шаблонами с прочерками
         val placeholder = getString(R.string.default_placeholder)
         tvNetmask.text = getString(R.string.label_subnet_mask, placeholder, placeholder)
+        tvNetworkClass.text = getString(R.string.label_network_class, placeholder)
+        tvNetworkType.text = getString(R.string.label_network_type, placeholder)
 
         // Кнопка "Рассчитать"
         btnCalculate.setOnClickListener {
@@ -80,14 +86,40 @@ class MainActivity : AppCompatActivity() {
                 hostCount = 2.0.pow(32 - prefix).toLong() - 2
             }
 
-            // ИСПРАВЛЕНО: Передаем маску и префикс как аргументы в шаблон строки ресурсов
+            // Выводим основные результаты расчетов
             tvNetmask.text = getString(R.string.label_subnet_mask, intToIpString(maskInt), prefix.toString())
-
             tvNetworkId.text = intToIpString(networkIdInt)
             tvBroadcast.text = intToIpString(broadcastInt)
             tvFirstHost.text = firstHostString
             tvLastHost.text = lastHostString
             tvUsableHosts.text = hostCount.toString()
+
+            // --- БЛОК АНАЛИТИКИ (Шаг 4) ---
+
+            // 1. Вытаскиваем первый октет IP для определения Класса сети
+            val firstOctet = (ipInt shr 24) and 0xFF
+
+            val networkClass = when (firstOctet) {
+                in 1..126 -> "A"
+                127 -> "A (Loopback)"
+                in 128..191 -> "B"
+                in 192..223 -> "C"
+                in 224..239 -> "D (Multicast)"
+                else -> "E (Experimental)"
+            }
+            tvNetworkClass.text = getString(R.string.label_network_class, networkClass)
+
+            // 2. Проверяем IP по стандарту RFC 1918 (Приватные диапазоны)
+            val secondOctet = (ipInt shr 16) and 0xFF
+            val isPrivate = when {
+                firstOctet == 10 -> true // 10.0.0.0/8
+                firstOctet == 172 && secondOctet in 16..31 -> true // 172.16.0.0/12
+                firstOctet == 192 && secondOctet == 168 -> true // 192.168.0.0/16
+                else -> false
+            }
+
+            val typeString = if (isPrivate) getString(R.string.type_private) else getString(R.string.type_public)
+            tvNetworkType.text = getString(R.string.label_network_type, typeString)
         }
 
         // Кнопка "Очистить" — сбрасывает ввод и возвращает плейсхолдеры
@@ -95,8 +127,9 @@ class MainActivity : AppCompatActivity() {
             etIpAddress.text.clear()
             etPrefix.text.clear()
 
-            // ИСПРАВЛЕНО: Возвращаем маску к дефолтному шаблону с прочерками
             tvNetmask.text = getString(R.string.label_subnet_mask, placeholder, placeholder)
+            tvNetworkClass.text = getString(R.string.label_network_class, placeholder)
+            tvNetworkType.text = getString(R.string.label_network_type, placeholder)
 
             tvNetworkId.text = placeholder
             tvBroadcast.text = placeholder
@@ -107,13 +140,12 @@ class MainActivity : AppCompatActivity() {
 
         // Кнопка "Копировать" — собирает результаты в буфер обмена
         btnCopy.setOnClickListener {
-            // Если расчет еще не производился (в тексте маски есть прочерк), копировать нечего
             if (tvNetmask.text.contains(placeholder)) {
                 Toast.makeText(this, getString(R.string.msg_nothing_to_copy), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Формируем красивый структурированный текст для буфера
+            // Добавляем строки аналитики в финальный копируемый текст
             val shareText = """
                 ${getString(R.string.title_analysis_results)}
                 IP: ${etIpAddress.text} /${etPrefix.text}
@@ -123,9 +155,10 @@ class MainActivity : AppCompatActivity() {
                 ${getString(R.string.label_first_usable_host)} ${tvFirstHost.text}
                 ${getString(R.string.label_last_usable_host)} ${tvLastHost.text}
                 ${getString(R.string.label_total_usable_hosts)} ${tvUsableHosts.text}
+                ${tvNetworkClass.text}
+                ${tvNetworkType.text}
             """.trimIndent()
 
-            // Копируем в системный буфер обмена Android
             val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("IP Calculator Results", shareText)
             clipboard.setPrimaryClip(clip)

@@ -28,4 +28,11 @@
     <string name="btn_copy">Копировать</string>
     <string name="msg_copied">Результаты скопированы в буфер обмена!</string>
     <string name="msg_nothing_to_copy">Нечего копировать. Сначала выполните расчет!</string>
+
+    <!-- Раздел аналитики -->
+    <string name="label_network_class">Класс сети: %1$s</string>
+    <string name="label_network_type">Тип сети: %1$s</string>
+    <string name="type_private">Приватная (RFC 1918)</string>
+    <string name="type_public">Публичная</string>
+
 </resources>

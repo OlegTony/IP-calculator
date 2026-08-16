@@ -204,6 +204,46 @@
                 android:textColor="@color/text_high_contrast" />
         </LinearLayout>
 
+        <!-- Класс сети (Шаг 4) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="6dp">
+            <TextView
+                android:id="@+id/tvNetworkClass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_network_class"
+                android:textStyle="bold"
+                android:textColor="@color/text_high_contrast"
+                android:maxLines="1"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="11sp"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeStepGranularity="1sp" />
+        </LinearLayout>
+
+        <!-- Тип сети: Приватная / Публичная (Шаг 4) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+            <TextView
+                android:id="@+id/tvNetworkType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_network_type"
+                android:textStyle="bold"
+                android:textColor="@color/text_high_contrast"
+                android:maxLines="1"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="11sp"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeStepGranularity="1sp" />
+        </LinearLayout>
+
         <!-- Ряд с кнопками Очистить и Копировать с авторазмером шрифта -->
         <LinearLayout
             android:layout_width="match_parent"

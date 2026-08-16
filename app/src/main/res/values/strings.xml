@@ -18,7 +18,6 @@
 
     <!-- Placeholder for empty results -->
     <string name="default_placeholder">—</string>
-    <!-- Добавь это в самый конец существующего файла перед тегом </resources> -->
     <string name="error_empty_fields">Please fill in all fields!</string>
     <string name="error_invalid_prefix">Prefix must be between 0 and 32!</string>
     <string name="error_invalid_ip">Invalid IP address format!</string>
@@ -27,4 +26,11 @@
     <string name="btn_copy">Copy</string>
     <string name="msg_copied">Results copied to clipboard!</string>
     <string name="msg_nothing_to_copy">No results to copy. Calculate first!</string>
+
+    <!-- Analytics section -->
+    <string name="label_network_class">Network Class: %1$s</string>
+    <string name="label_network_type">Network Type: %1$s</string>
+    <string name="type_private">Private (RFC 1918)</string>
+    <string name="type_public">Public</string>
+
 </resources>
