@@ -8,7 +8,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import java.util.Locale
 import kotlin.math.pow
 
@@ -18,14 +20,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Инициализация SharedPreferences для хранения истории
+        val sharedPreferences = getSharedPreferences("ip_calculator_prefs", Context.MODE_PRIVATE)
+
         // 1. Инициализация элементов ввода данных
         val etIpAddress = findViewById<EditText>(R.id.etIpAddress)
         val etPrefix = findViewById<EditText>(R.id.etPrefix)
         val btnCalculate = findViewById<Button>(R.id.btnCalculate)
 
-        // Кнопки из Шага 2
+        // Кнопки из Шага 2 и Шага 5
         val btnClear = findViewById<Button>(R.id.btnClear)
         val btnCopy = findViewById<Button>(R.id.btnCopy)
+        val btnHistory = findViewById<Button>(R.id.btnHistory)
 
         // 2. Инициализация элементов вывода результатов
         val tvNetmask = findViewById<TextView>(R.id.tvNetmask)
@@ -34,8 +40,6 @@ class MainActivity : AppCompatActivity() {
         val tvFirstHost = findViewById<TextView>(R.id.tvFirstHost)
         val tvLastHost = findViewById<TextView>(R.id.tvLastHost)
         val tvUsableHosts = findViewById<TextView>(R.id.tvUsableHosts)
-
-        // Новые элементы из Шага 4 (Аналитика)
         val tvNetworkClass = findViewById<TextView>(R.id.tvNetworkClass)
         val tvNetworkType = findViewById<TextView>(R.id.tvNetworkType)
 
@@ -87,18 +91,16 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Выводим основные результаты расчетов
-            tvNetmask.text = getString(R.string.label_subnet_mask, intToIpString(maskInt), prefix.toString())
+            val netmaskString = getString(R.string.label_subnet_mask, intToIpString(maskInt), prefix.toString())
+            tvNetmask.text = netmaskString
             tvNetworkId.text = intToIpString(networkIdInt)
             tvBroadcast.text = intToIpString(broadcastInt)
             tvFirstHost.text = firstHostString
             tvLastHost.text = lastHostString
             tvUsableHosts.text = hostCount.toString()
 
-            // --- БЛОК АНАЛИТИКИ (Шаг 4) ---
-
-            // 1. Вытаскиваем первый октет IP для определения Класса сети
+            // Блок аналитики
             val firstOctet = (ipInt shr 24) and 0xFF
-
             val networkClass = when (firstOctet) {
                 in 1..126 -> "A"
                 127 -> "A (Loopback)"
@@ -109,18 +111,32 @@ class MainActivity : AppCompatActivity() {
             }
             tvNetworkClass.text = getString(R.string.label_network_class, networkClass)
 
-            // 2. Проверяем IP по стандарту RFC 1918 (Приватные диапазоны)
             val secondOctet = (ipInt shr 16) and 0xFF
             val isPrivate = when {
-                firstOctet == 10 -> true // 10.0.0.0/8
-                firstOctet == 172 && secondOctet in 16..31 -> true // 172.16.0.0/12
-                firstOctet == 192 && secondOctet == 168 -> true // 192.168.0.0/16
+                firstOctet == 10 -> true
+                firstOctet == 172 && secondOctet in 16..31 -> true
+                firstOctet == 192 && secondOctet == 168 -> true
                 else -> false
             }
 
             val typeString = if (isPrivate) getString(R.string.type_private) else getString(R.string.type_public)
             tvNetworkType.text = getString(R.string.label_network_type, typeString)
-        }
+
+            // --- СОХРАНЕНИЕ В ИСТОРИЮ ---
+            val historyEntry = "$ipString/$prefix -> ID: ${intToIpString(networkIdInt)} | Mask: ${intToIpString(maskInt)}"
+            val currentHistory = sharedPreferences.getStringSet("calculation_history", emptySet())?.toMutableList() ?: mutableListOf()
+
+            currentHistory.remove(historyEntry)
+            currentHistory.add(0, historyEntry)
+
+            if (currentHistory.size > 10) {
+                currentHistory.removeAt(currentHistory.size - 1)
+            }
+
+            sharedPreferences.edit {
+                putStringSet("calculation_history", currentHistory.toSet())
+            }
+        } // Скобка закрывает btnCalculate
 
         // Кнопка "Очистить" — сбрасывает ввод и возвращает плейсхолдеры
         btnClear.setOnClickListener {
@@ -145,7 +161,6 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Добавляем строки аналитики в финальный копируемый текст
             val shareText = """
                 ${getString(R.string.title_analysis_results)}
                 IP: ${etIpAddress.text} /${etPrefix.text}
@@ -165,24 +180,47 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(this, getString(R.string.msg_copied), Toast.LENGTH_SHORT).show()
         }
-    }
 
-    private fun parseIpToBytes(ipStr: String): Int? {
-        val parts = ipStr.split(".")
+        // Кнопка "История" — показывает диалоговое окно
+        btnHistory.setOnClickListener {
+            val historySet = sharedPreferences.getStringSet("calculation_history", emptySet()) ?: emptySet()
+            val historyList = historySet.toList()
+
+            if (historyList.isEmpty()) {
+                Toast.makeText(this, "История пуста", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            AlertDialog.Builder(this)
+                .setTitle("История расчетов")
+                .setItems(historyList.toTypedArray(), null)
+                .setPositiveButton("ОК", null)
+                .setNeutralButton("Очистить") { _, _ ->
+                    sharedPreferences.edit { remove("calculation_history") }
+                    Toast.makeText(this, "История очищена", Toast.LENGTH_SHORT).show()
+                }
+                .show()
+        }
+    } // Скобка закрывает метод onCreate
+
+    // Вспомогательная функция для парсинга IP
+    private fun parseIpToBytes(ipString: String): Int? {
+        val parts = ipString.split(".")
         if (parts.size != 4) return null
         return try {
             var ip = 0
             for (i in 0..3) {
                 val part = parts[i].toInt()
-                if (part < 0 || part > 255) return null
+                if (part !in 0..255) return null
                 ip = (ip shl 8) or part
             }
             ip
-        } catch (e: NumberFormatException) {
+        } catch (e: Exception) {
             null
         }
     }
 
+    // Вспомогательная функция для перевода Int в строку IP
     private fun intToIpString(ipInt: Int): String {
         return String.format(
             Locale.US,
@@ -193,4 +231,4 @@ class MainActivity : AppCompatActivity() {
             ipInt and 0xFF
         )
     }
-}
+} // Скобка закрывает класс MainActivity

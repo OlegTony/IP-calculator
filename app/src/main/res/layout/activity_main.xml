@@ -244,12 +244,12 @@
                 android:autoSizeStepGranularity="1sp" />
         </LinearLayout>
 
-        <!-- Ряд с кнопками Очистить и Копировать с авторазмером шрифта -->
+        <!-- Ряд с кнопками Очистить и Копировать с авторазмером шрифта (Шаг 2) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="8dp">
 
             <Button
                 android:id="@+id/btnClear"
@@ -284,6 +284,23 @@
                 android:autoSizeStepGranularity="1sp" />
         </LinearLayout>
 
+        <!-- Кнопка вызова Истории расчетов (Шаг 5 - Полноразмерная и стильная) -->
+        <Button
+            android:id="@+id/btnHistory"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_history"
+            android:maxLines="1"
+            android:backgroundTint="@color/primary_dark_blue"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeMaxTextSize="14sp"
+            android:autoSizeStepGranularity="1sp" />
 
     </LinearLayout>
 </ScrollView>
+

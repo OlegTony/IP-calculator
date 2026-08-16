@@ -33,4 +33,9 @@
     <string name="type_private">Private (RFC 1918)</string>
     <string name="type_public">Public</string>
 
+    <!-- History section -->
+    <string name="btn_history">History</string>
+    <string name="title_history">Recent Calculations</string>
+    <string name="history_empty">History is empty</string>
+
 </resources>

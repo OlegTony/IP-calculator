@@ -35,4 +35,9 @@
     <string name="type_private">Приватная (RFC 1918)</string>
     <string name="type_public">Публичная</string>
 
+    <!-- Раздел истории -->
+    <string name="btn_history">История</string>
+    <string name="title_history">Последние расчеты</string>
+    <string name="history_empty">История пуста</string>
+
 </resources>
