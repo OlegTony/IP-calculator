@@ -31,3 +31,6 @@
 
 # Android build outputs
 app/release/
+
+# Release signing credentials
+keystore.properties
