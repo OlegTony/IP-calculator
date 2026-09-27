@@ -15,6 +15,7 @@
     <string name="label_first_usable_host">First Host:</string>
     <string name="label_last_usable_host">Last Host:</string>
     <string name="label_total_usable_hosts">Total Hosts:</string>
+    <string name="label_wildcard">Wildcard Mask: </string>
 
     <!-- Placeholder for empty results -->
     <string name="default_placeholder">—</string>
@@ -37,5 +38,23 @@
     <string name="btn_history">History</string>
     <string name="title_history">Recent Calculations</string>
     <string name="history_empty">History is empty</string>
+    <string name="btn_history_description">Calculation history</string>
+    <string name="button_ok">OK</string>
+    <string name="history_cleared">History cleared</string>
+
+    <!-- Public IP section -->
+    <string name="public_ip_loading">Your Public IP: </string>
+    <string name="public_ip_error">Your Public IP: Connection error</string>
+    <string name="public_ip_copied">Public IP copied!</string>
+
+    <!-- Copy result -->
+    <string name="copy_ip_prefix">IP Address/Prefix</string>
+    <string name="copy_subnet_mask">Subnet Mask</string>
+    <string name="copy_network_id">Network ID</string>
+    <string name="copy_broadcast">Broadcast</string>
+    <string name="copy_first_host">First Host</string>
+    <string name="copy_last_host">Last Host</string>
+    <string name="copy_total_hosts">Total Hosts</string>
+    <string name="copy_wildcard">Wildcard Mask</string>
 
 </resources>

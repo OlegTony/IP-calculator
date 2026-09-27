@@ -1,13 +1,17 @@
-<resources>
-<!-- Базовая тема приложения -->
-    <style name="Theme.IPCalculator" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Главные цвета бренда (убираем сиреневый, ставим тёмно-синий) -->
-        <item name="colorPrimary">@color/primary_dark_blue</item>
+<resources xmlns:tools="http://android.com">
+    <!-- Базовая тема приложения -->
+    <style name="Theme.IPCalculator" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Главные цвета бренда (наши оранжевые кнопки) -->
+        <item name="colorPrimary">@color/orange_primary</item>
+        <item name="colorPrimaryVariant">@color/orange_border</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorPrimaryContainer">@color/primary_dark_blue_variant</item>
 
-        <!-- Цвет фона всего приложения -->
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:statusBarColor">@color/primary_dark_blue</item>
+        <!-- Цвета фона приложения -->
+        <item name="android:windowBackground">@color/dark_background</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+
+        <item name="android:statusBarColor">@color/dark_background</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

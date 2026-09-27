@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://android.com"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".MainActivity">
+    android:background="@color/dark_background"
+    tools:context=".MainActivity"
+    tools:ignore="all">
 
-    <LinearLayout
+<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/white">
-
+        android:background="@color/dark_background"
+        tools:ignore="VisualLintBounds">
 
     <TextView
             android:layout_width="match_parent"
@@ -26,45 +31,62 @@
             android:textColor="@color/text_high_contrast"
             android:layout_marginBottom="8dp" />
 
-        <EditText
-            android:id="@+id/etIpAddress"
+        <TextView
+            android:id="@+id/tvPublicIp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/public_ip_loading"
+            android:textColor="#FF8800"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:minHeight="48dp"
-            android:hint="@string/hint_ip_address"
-            android:inputType="phone"
-            android:digits="0123456789."
-            android:maxLength="15"
-            android:textColor="@color/text_high_contrast"
-            android:textColorHint="#757575"
-            android:importantForAutofill="no"
-            android:layout_marginBottom="12dp"
-            tools:ignore="SpeakableTextPresent" />
-
-        <EditText
-            android:id="@+id/etPrefix"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:hint="@string/hint_network_prefix"
-            android:inputType="number"
-            android:maxLength="2"
-            android:importantForAutofill="no"
+            android:gravity="start|center_vertical"
             android:layout_marginBottom="16dp"
-            android:textColor="@color/text_high_contrast"
-            android:textColorHint="#757575"
-            tools:ignore="SpeakableTextPresent" />
+            android:padding="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
 
-        <Button
-            android:id="@+id/btnCalculate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_calculate"
-            android:textSize="16sp"
-            android:backgroundTint="@color/primary_dark_blue"
-            android:layout_marginBottom="24dp" />
+    <EditText
+        android:id="@+id/etIpAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/hint_ip_address"
+        android:inputType="phone"
+        android:digits="0123456789."
+        android:maxLength="15"
+        android:textColor="@color/text_high_contrast"
+        android:textColorHint="@color/text_hint_color"
+        android:importantForAutofill="no"
+        android:layout_marginBottom="12dp"
+        tools:ignore="SpeakableTextPresent" />
 
-        <!-- Analysis Results -->
+    <EditText
+        android:id="@+id/etPrefix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="@string/hint_network_prefix"
+        android:inputType="number"
+        android:maxLength="2"
+        android:importantForAutofill="no"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/text_high_contrast"
+        android:textColorHint="@color/text_hint_color"
+        tools:ignore="SpeakableTextPresent" />
+
+    <!-- КНОПКА РАСЧЁТ -->
+    <Button
+        android:id="@+id/btnCalculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_calculate"
+        android:maxLines="1"
+        android:backgroundTint="@color/orange_primary"
+        android:textColor="@color/white"/>
+
+    <!-- Analysis Results -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,6 +137,29 @@
                 android:text="@string/default_placeholder"
                 android:textColor="@color/text_high_contrast" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_wildcard"
+                android:textColor="@color/text_high_contrast"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvWildcard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/default_placeholder"
+                android:textColor="@color/text_high_contrast" />
+        </LinearLayout>
+
 
         <!-- Broadcast Address -->
         <LinearLayout
@@ -204,7 +249,7 @@
                 android:textColor="@color/text_high_contrast" />
         </LinearLayout>
 
-        <!-- Класс сети (Шаг 4) -->
+        <!-- Класс сети -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -224,12 +269,12 @@
                 android:autoSizeStepGranularity="1sp" />
         </LinearLayout>
 
-        <!-- Тип сети: Приватная / Публичная (Шаг 4) -->
+        <!-- Тип сети: Приватная / Публичная -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="8dp">
             <TextView
                 android:id="@+id/tvNetworkType"
                 android:layout_width="match_parent"
@@ -244,39 +289,37 @@
                 android:autoSizeStepGranularity="1sp" />
         </LinearLayout>
 
-        <!-- Ряд с кнопками Очистить и Копировать с авторазмером шрифта (Шаг 2) -->
+        <!-- Ряд с кнопками Очистить и Копировать с авторазмером шрифта -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="8dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnClear"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/btn_clear"
                 android:maxLines="1"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="#757575"
+                android:backgroundTint="@color/text_hint_color"
                 android:textColor="@color/white"
                 android:autoSizeTextType="uniform"
                 android:autoSizeMinTextSize="10sp"
                 android:autoSizeMaxTextSize="14sp"
                 android:autoSizeStepGranularity="1sp" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnCopy"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/btn_copy"
                 android:maxLines="1"
                 android:layout_marginStart="8dp"
-                android:backgroundTint="@color/primary_dark_blue"
+                android:backgroundTint="@color/orange_primary"
                 android:textColor="@color/white"
                 android:autoSizeTextType="uniform"
                 android:autoSizeMinTextSize="10sp"
@@ -284,22 +327,22 @@
                 android:autoSizeStepGranularity="1sp" />
         </LinearLayout>
 
-        <!-- Кнопка вызова Истории расчетов (Шаг 5 - Полноразмерная и стильная) -->
+        <!-- Calculation History -->
         <Button
             android:id="@+id/btnHistory"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btn_history"
             android:maxLines="1"
-            android:backgroundTint="@color/primary_dark_blue"
+            android:background="@drawable/orange_button_background"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:layout_marginTop="8dp"
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="10sp"
             android:autoSizeMaxTextSize="14sp"
-            android:autoSizeStepGranularity="1sp" />
+            android:autoSizeStepGranularity="1sp"
+            android:contentDescription="@string/btn_history_description"/>
 
     </LinearLayout>
 </ScrollView>

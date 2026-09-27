@@ -7,9 +7,27 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
+# Android Studio project settings
+.idea/AndroidProjectSystem.xml
+.idea/compiler.xml
+.idea/deploymentTargetSelector.xml
+.idea/migrations.xml
+.idea/misc.xml
+.idea/codeStyles/
+.idea/inspectionProfiles/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties
+
+# Keystore files
+*.jks
+*.keystore
+
+# Kotlin build files
+.kotlin/
+
+# Android build outputs
+app/release/

@@ -15,6 +15,7 @@
     <string name="label_first_usable_host">Первый хост:</string>
     <string name="label_last_usable_host">Последний хост:</string>
     <string name="label_total_usable_hosts">Всего хостов:</string>
+    <string name="label_wildcard">Wildcard-маска: </string>
 
     <!-- Заполнитель для пустых результатов -->
     <string name="default_placeholder">—</string>
@@ -39,5 +40,23 @@
     <string name="btn_history">История</string>
     <string name="title_history">Последние расчеты</string>
     <string name="history_empty">История пуста</string>
+    <string name="btn_history_description">История расчётов</string>
+    <string name="button_ok">ОК</string>
+    <string name="history_cleared">История очищена</string>
+
+    <!-- Публичные IP адреса -->
+    <string name="public_ip_loading">Ваш внешний IP: </string>
+    <string name="public_ip_error">Ваш внешний IP: Ошибка подключения</string>
+    <string name="public_ip_copied">Внешний IP скопирован!</string>
+
+    <!-- Текст результата для копирования -->
+    <string name="copy_ip_prefix">IP-Адрес/Префикс</string>
+    <string name="copy_subnet_mask">Маска сети</string>
+    <string name="copy_network_id">ID Сети</string>
+    <string name="copy_broadcast">Broadcast</string>
+    <string name="copy_first_host">Первый хост</string>
+    <string name="copy_last_host">Последний хост</string>
+    <string name="copy_total_hosts">Доступно хостов</string>
+    <string name="copy_wildcard">Wildcard-маска</string>
 
 </resources>

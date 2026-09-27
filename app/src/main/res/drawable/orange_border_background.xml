@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Цвет внутри карточки -->
+    <solid android:color="@color/dark_surface" />
+
+    <!-- Толщина и цвет оранжевой рамки -->
+    <stroke
+        android:width="4dp"
+        android:color="@color/orange_border" />
+
+    <!-- Скругление углов -->
+    <corners android:radius="24dp" />
+</shape>
